@@ -1,6 +1,8 @@
 const Repair = require('./../models/repairs.model');
+const castchAsync = require('./../utils/catchAsync');
+const AppError = require('../utils/appError');
 
-exports.findAllRepairs = async (req, res) => {
+exports.findAllRepairs = castchAsync(async (req, res) => {
   const repairs = await Repair.findAll({
     where: {
       status: 'pending',
@@ -11,9 +13,9 @@ exports.findAllRepairs = async (req, res) => {
     message: 'the query has been done successfully',
     repairs,
   });
-};
+});
 
-exports.createRepairs = async (req, res) => {
+exports.createRepairs = castchAsync(async (req, res) => {
   const { date, userid } = req.body;
 
   const repair = await Repair.create({ date, userid });
@@ -23,9 +25,9 @@ exports.createRepairs = async (req, res) => {
     message: 'the repair has benn created',
     repair,
   });
-};
+});
 
-exports.updateRepairs = async (req, res) => {
+exports.updateRepairs = castchAsync(async (req, res) => {
   const { id } = req.params;
   const { date, userid } = req.body;
   const repair = await Repair.findOne({
@@ -52,9 +54,9 @@ exports.updateRepairs = async (req, res) => {
     status: 'success',
     message: 'The repair has been update',
   });
-};
+});
 
-exports.deleteRepairs = async (req, res) => {
+exports.deleteRepairs = castchAsync(async (req, res) => {
   const { id } = req.params;
   const repair = await Repair.findOne({
     where: {
@@ -77,9 +79,9 @@ exports.deleteRepairs = async (req, res) => {
     status: 'success',
     message: `The repair ${id} has been deleted`,
   });
-};
+});
 
-exports.findOneRepairs = async (req, res) => {
+exports.findOneRepairs = castchAsync(async (req, res) => {
   const { id } = req.params;
   const repair = await Repair.findOne({
     where: {
@@ -100,7 +102,7 @@ exports.findOneRepairs = async (req, res) => {
     message: 'the query has been done successfully',
     repair,
   });
-};
+});
 
 //findAllRepairs
 //findOneRepairs
