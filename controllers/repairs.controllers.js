@@ -1,6 +1,5 @@
 const Repair = require('./../models/repairs.model');
 const castchAsync = require('./../utils/catchAsync');
-const AppError = require('../utils/appError');
 
 exports.findAllRepairs = castchAsync(async (req, res) => {
   const repairs = await Repair.findAll({
@@ -61,7 +60,7 @@ exports.deleteRepairs = castchAsync(async (req, res) => {
   const repair = await Repair.findOne({
     where: {
       id,
-      status: 'cancelled',
+      status: 'pending',
     },
   });
 

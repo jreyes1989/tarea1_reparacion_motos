@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/users.model');
-const castchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
+const Repair = require('../models/repairs.model');
+const castchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 const { promisify } = require('util');
 
 exports.protect = castchAsync(async (req, res, next) => {
@@ -36,7 +37,7 @@ exports.protect = castchAsync(async (req, res, next) => {
     },
   });
 
-  if (!user) {
+  if (!User) {
     return next(
       AppError('Username does not exist, or the token is not available', 401)
     );

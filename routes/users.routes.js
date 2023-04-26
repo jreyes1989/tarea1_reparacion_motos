@@ -2,10 +2,10 @@ const express = require('express');
 
 // controller
 const usersController = require('./../controllers/users.controllers');
-const validations = require('./../middlewares/validations.middleware');
 
 // middleware
-const usersMiddleware = require('./../middlewares/users.middleware');
+const authMiddleware = require('../middlewares/auth.middleware');
+const validations = require('./../middlewares/validations.middleware');
 
 const router = express.Router();
 
@@ -22,23 +22,8 @@ router.post(
 
 router
   .route('/:id')
-  .get(usersMiddleware.validIfExistUser, usersController.findOneUsers);
-
-// rutas protegidas ----->
-router
-  .use(usersMiddleware.protect)
-
-  .patch(
-    usersMiddleware.validIfExistUser,
-    usersMiddleware.protectAccountOwner,
-    usersMiddleware.restrictTo('employee'),
-    usersController.updateUsers
-  )
-  .delete(
-    usersMiddleware.validIfExistUser,
-    usersMiddleware.protectAccountOwner,
-    usersMiddleware.restrictTo('employee'),
-    usersController.deleteUsers
-  );
+  .get(usersController.findOneUsers)
+  .patch(usersController.updateUsers)
+  .delete(usersController.deleteUsers);
 
 module.exports = router;
