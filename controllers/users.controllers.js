@@ -1,10 +1,10 @@
 const User = require('./../models/users.model');
-const castchAsync = require('./../utils/catchAsync');
+const catchAsync = require('./../utils/catchAsync');
 const AppError = require('../utils/appError');
 const bcrypt = require('bcryptjs');
 const generateJWT = require('./../utils/jwt');
 
-exports.findAllUsers = castchAsync(async (req, res) => {
+exports.findAllUsers = catchAsync(async (req, res) => {
   const { requestTime } = req;
   const users = await User.findAll({
     where: {
@@ -21,7 +21,7 @@ exports.findAllUsers = castchAsync(async (req, res) => {
   });
 });
 
-exports.createUsers = castchAsync(async (req, res) => {
+exports.createUsers = catchAsync(async (req, res) => {
   const { username, email, password, role } = req.body;
 
   //  contrasena  encriptada
@@ -50,7 +50,7 @@ exports.createUsers = castchAsync(async (req, res) => {
   });
 });
 
-exports.loginUser = castchAsync(async (req, res, next) => {
+exports.loginUser = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({
@@ -84,22 +84,10 @@ exports.loginUser = castchAsync(async (req, res, next) => {
   });
 });
 
-exports.updateUsers = castchAsync(async (req, res) => {
-  const { id } = req.params;
+exports.updateUsers = catchAsync(async (req, res) => {
+  const { user } = req;
   const { username, email } = await req.body;
-  const user = await User.findOne({
-    where: {
-      id,
-      status: true,
-    },
-  });
 
-  if (!user) {
-    return res.status(404).json({
-      status: 'error',
-      message: `User with ${id} not found`,
-    });
-  }
   await user.update({
     username,
     email,
@@ -111,60 +99,27 @@ exports.updateUsers = castchAsync(async (req, res) => {
   });
 });
 
-exports.deleteUsers = castchAsync(async (req, res) => {
-  const { id } = req.params;
-  const user = await User.findOne({
-    where: {
-      id,
-      status: true,
-    },
-  });
+exports.deleteUsers = catchAsync(async (req, res) => {
+  const { user } = req;
 
-  if (!user) {
-    return res.status(404).json({
-      status: 'error',
-      message: `User with ${id} not found`,
-    });
-  }
   await user.update({
     status: false,
   });
 
   res.status(200).json({
     status: 'success',
-    message: `The user ${id} has been deleted `,
+    message: `The user has been deleted `,
   });
 });
 
-exports.findOneUsers = castchAsync(async (req, res) => {
-  try {
-    const { id } = req.params;
+exports.findOneUsers = catchAsync(async (req, res) => {
+  const { user } = req;
 
-    const user = await User.findOne({
-      where: {
-        id,
-        status: true,
-      },
-    });
-
-    if (!user) {
-      return res.status(404).json({
-        status: 'error',
-        message: `user whith id ${id} not found`,
-      });
-    }
-
-    res.status(200).json({
-      status: 'success',
-      message: 'the query has been done successfully ',
-      user,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: 'fail',
-      message: 'Something went very wrong',
-    });
-  }
+  res.status(200).json({
+    status: 'success',
+    message: 'the query has been done successfully ',
+    user,
+  });
 });
 
 // findAllUsers

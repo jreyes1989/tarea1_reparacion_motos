@@ -4,12 +4,12 @@ const express = require('express');
 const repairsController = require('./../controllers/repairs.controllers');
 
 // middleware
-const authMiddleware = require('../middlewares/auth.middleware');
 const validations = require('./../middlewares/validations.middleware');
+const repairMiddleware = require('./../middlewares/repairs.middleware');
 
 const router = express.Router();
 
-router.use(authMiddleware.protect);
+//router.use(authMiddleware.protect);
 // rutas protegidas ----->
 
 router
@@ -19,17 +19,17 @@ router
 
 router
   .route('/:id')
-  .get(repairsController.findOneRepairs)
+  .get(repairMiddleware.validRepair, repairsController.findOneRepairs)
   .patch(
-    //authMiddleware.validIfExistUser,
+    repairMiddleware.validRepair,
     //authMiddleware.protectAccountOwner,
-    authMiddleware.restrictTo('employee'), // permiso por rol
+    //authMiddleware.restrictTo('employee'), // permiso por rol
     repairsController.updateRepairs
   )
   .delete(
-    //authMiddleware.validIfExistUser,
+    repairMiddleware.validRepair,
     //authMiddleware.protectAccountOwner,
-    authMiddleware.restrictTo('employee'), // permisos por rol
+    // authMiddleware.restrictTo('employee'), // permisos por rol
     repairsController.deleteRepairs
   );
 

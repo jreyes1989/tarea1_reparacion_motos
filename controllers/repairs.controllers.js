@@ -15,9 +15,14 @@ exports.findAllRepairs = castchAsync(async (req, res) => {
 });
 
 exports.createRepairs = castchAsync(async (req, res) => {
-  const { date, userid } = req.body;
+  const { date, userid, motorsNumber, description } = req.body;
 
-  const repair = await Repair.create({ date, userid });
+  const repair = await Repair.create({
+    date,
+    userid,
+    motorsNumber,
+    description,
+  });
 
   res.status(201).json({
     status: 'success',
@@ -27,21 +32,8 @@ exports.createRepairs = castchAsync(async (req, res) => {
 });
 
 exports.updateRepairs = castchAsync(async (req, res) => {
-  const { id } = req.params;
+  const { repair } = req;
   const { date, userid } = req.body;
-  const repair = await Repair.findOne({
-    where: {
-      id,
-      status: 'pending',
-    },
-  });
-
-  if (!repair) {
-    return res.status(404).json({
-      status: 'error',
-      message: `Repairs with ${id} not found`,
-    });
-  }
 
   await repair.update({
     status: 'completed',
@@ -56,48 +48,22 @@ exports.updateRepairs = castchAsync(async (req, res) => {
 });
 
 exports.deleteRepairs = castchAsync(async (req, res) => {
-  const { id } = req.params;
-  const repair = await Repair.findOne({
-    where: {
-      id,
-      status: 'pending',
-    },
-  });
-
-  if (!repair) {
-    return res.status(404).json({
-      status: 'error',
-      message: `Repair with ${id} not found`,
-    });
-  }
+  const { repair } = req;
 
   await repair.update({
     status: 'cancelled',
   });
   res.status(200).json({
     status: 'success',
-    message: `The repair ${id} has been deleted`,
+    message: `The repair has been deleted`,
   });
 });
 
 exports.findOneRepairs = castchAsync(async (req, res) => {
-  const { id } = req.params;
-  const repair = await Repair.findOne({
-    where: {
-      id,
-      status: 'pending',
-    },
-  });
-
-  if (!repair) {
-    return res.status(404).json({
-      status: 'error',
-      message: `repair whith id ${id} not found`,
-    });
-  }
+  const { repair } = req;
 
   res.status(200).json({
-    status: 'completed',
+    status: 'pending',
     message: 'the query has been done successfully',
     repair,
   });

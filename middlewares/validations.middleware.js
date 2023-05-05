@@ -42,3 +42,13 @@ exports.loginUserValidation = [
     .withMessage('Password must be at least 9 characters long'),
   validFields,
 ];
+
+exports.updateUserValidation = [
+  body('username').notEmpty().withMessage('Name cannot be empty'),
+  body('email')
+    .notEmpty()
+    .withMessage('Email cannot be empty')
+    .isEmail()
+    .withMessage('Must be a valid email'),
+  validFields,
+];

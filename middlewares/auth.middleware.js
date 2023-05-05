@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/users.model');
-const Repair = require('../models/repairs.model');
 const castchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const { promisify } = require('util');
@@ -47,7 +46,7 @@ exports.protect = castchAsync(async (req, res, next) => {
   next();
 });
 
-exports.validIfExistUser = castchAsync(async (req, res, next) => {
+exports.validUser = castchAsync(async (req, res, next) => {
   const { id } = req.params;
 
   const user = await User.findOne({
@@ -58,7 +57,7 @@ exports.validIfExistUser = castchAsync(async (req, res, next) => {
   });
 
   if (!user) {
-    return next(AppError('User not found', 404));
+    return next(new AppError('User not found', 404));
   }
 
   req.user = user;

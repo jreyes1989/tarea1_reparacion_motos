@@ -14,8 +14,13 @@ const Repair = db.define('repair', {
     allowNull: false,
   },
 
-  userid: {
-    type: DataTypes.INTEGER,
+  motorsNumber: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
+  description: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
 
@@ -23,6 +28,11 @@ const Repair = db.define('repair', {
     type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
     allowNull: false,
     defaultValue: 'pending',
+  },
+
+  userid: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
 });
 

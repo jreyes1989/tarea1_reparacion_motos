@@ -22,8 +22,12 @@ router.post(
 
 router
   .route('/:id')
-  .get(usersController.findOneUsers)
-  .patch(usersController.updateUsers)
-  .delete(usersController.deleteUsers);
+  .get(authMiddleware.validUser, usersController.findOneUsers)
+  .patch(
+    validations.updateUserValidation,
+    authMiddleware.validUser,
+    usersController.updateUsers
+  )
+  .delete(authMiddleware.validUser, usersController.deleteUsers);
 
 module.exports = router;
