@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/users.model');
-const castchAsync = require('../utils/catchAsync');
+const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const { promisify } = require('util');
 
-exports.protect = castchAsync(async (req, res, next) => {
+exports.protect = catchAsync(async (req, res, next) => {
   let token; // extraer token
 
   if (
@@ -46,25 +46,7 @@ exports.protect = castchAsync(async (req, res, next) => {
   next();
 });
 
-exports.validUser = castchAsync(async (req, res, next) => {
-  const { id } = req.params;
-
-  const user = await User.findOne({
-    where: {
-      id,
-      status: true,
-    },
-  });
-
-  if (!user) {
-    return next(new AppError('User not found', 404));
-  }
-
-  req.user = user;
-  next();
-});
-
-exports.protectAccountOwner = castchAsync(async (req, res, next) => {
+exports.protectAccountOwner = catchAsync(async (req, res, next) => {
   const { user, sessionUser } = req;
 
   if (user.id !== sessionUser.id) {

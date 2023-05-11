@@ -1,7 +1,7 @@
 const Repair = require('./../models/repairs.model');
-const castchAsync = require('./../utils/catchAsync');
+const catchAsync = require('./../utils/catchAsync');
 
-exports.findAllRepairs = castchAsync(async (req, res) => {
+exports.findAllRepairs = catchAsync(async (req, res) => {
   const repairs = await Repair.findAll({
     where: {
       status: 'pending',
@@ -14,7 +14,7 @@ exports.findAllRepairs = castchAsync(async (req, res) => {
   });
 });
 
-exports.createRepairs = castchAsync(async (req, res) => {
+exports.createRepairs = catchAsync(async (req, res) => {
   const { date, userid, motorsNumber, description } = req.body;
 
   const repair = await Repair.create({
@@ -31,7 +31,7 @@ exports.createRepairs = castchAsync(async (req, res) => {
   });
 });
 
-exports.updateRepairs = castchAsync(async (req, res) => {
+exports.updateRepairs = catchAsync(async (req, res) => {
   const { repair } = req;
   const { date, userid } = req.body;
 
@@ -47,7 +47,7 @@ exports.updateRepairs = castchAsync(async (req, res) => {
   });
 });
 
-exports.deleteRepairs = castchAsync(async (req, res) => {
+exports.deleteRepairs = catchAsync(async (req, res) => {
   const { repair } = req;
 
   await repair.update({
@@ -59,7 +59,7 @@ exports.deleteRepairs = castchAsync(async (req, res) => {
   });
 });
 
-exports.findOneRepairs = castchAsync(async (req, res) => {
+exports.findOneRepairs = catchAsync(async (req, res) => {
   const { repair } = req;
 
   res.status(200).json({
